@@ -3,8 +3,4 @@
 
 # Mutan
 
-Mutan is web application that manages weight training and records the staticstics.
-
-## Demo
-
-URL is [here](https://mutan-app.github.io/mutan/).
+Mutan manages weight training and records the staticstics.
