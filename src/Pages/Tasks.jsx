@@ -4,7 +4,7 @@ export default function () {
   return (
     <>
       <div className="font-bold text-slate-900 text-2xl">最近のタスク</div>
-      <div className="rounded-lg bg-rose-700 my-5 p-6 bg-gradient-to-r from-red-500 to-rose-200">
+      <div className="rounded-lg bg-rose-700 my-5 p-6 bg-gradient-to-r from-rose-200 to-rose-600">
         <Link to="/doneTask">
           <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
           <div className="py-3">
@@ -14,7 +14,7 @@ export default function () {
         </Link>
       </div>
 
-      <div className="rounded-lg bg-rose-500  my-5 p-6">
+      <div className="rounded-lg bg-rose-500  my-5 p-6 bg-gradient-to-r from-rose-200 to-rose-600">
         <Link to="/doneTask">
           <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
           <div className="py-3">
@@ -25,7 +25,7 @@ export default function () {
       </div>
 
       <div className="font-bold text-slate-900 text-2xl">すべてのタスク</div>
-      <div className="rounded-lg bg-rose-300 my-5 p-6">
+      <div className="rounded-lg bg-rose-300 my-5 p-6 bg-gradient-to-r from-rose-200 to-rose-600">
         <Link to="/doneTask">
           <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
           <div className="py-3">
