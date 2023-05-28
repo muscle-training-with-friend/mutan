@@ -8,14 +8,13 @@ export default function () {
 
   return (
     <>
-      <div className="font-bold text-slate-600">タイマー</div>
-      <div className="rounded-lg bg-gradient-to-l from-rose-200 to-rose-600 my-6 p-6">
+      <div className="rounded-2xl bg-gradient-to-r from-theme_color1 to-theme_color4 my-6 p-6">
         <div className="font-bold text-xl flex justify-center">ベンチ</div>
         <div className="text-sm my-2">・ベンチ30kg10回</div>
       </div>
 
       <div className="flex justify-center">
-        <div className="rounded-full h-80 w-80 bg-gradient-to-l from-rose-200 to-rose-600 my-6 p-3">
+        <div className="rounded-full h-80 w-80 bg-gradient-to-r from-theme_color1 to-theme_color4 my-6 p-3">
           <div className="rounded-full h-full w-full bg-white">
             <div className="flex justify-center font-sm pt-16">timer is...</div>
             <div className="flex justify-center font-sm">{isRunning ? "Running" : "Not Running"}</div>
@@ -26,11 +25,12 @@ export default function () {
         </div>
       </div>
 
-
-      <div className="grid grid-cols-3 gap-8 content-center mt-5 my-16">
-        <div className="flex justify-center rounded-lg bg-gradient-to-l from-rose-200 to-rose-600 py-3" onClick={start}>start</div>
-        <div className="flex justify-center rounded-lg bg-gradient-to-l from-rose-200 to-rose-600 py-3" onClick={pause}>stop</div>
-        <div className="flex justify-center rounded-lg bg-gradient-to-l from-rose-200 to-rose-600 py-3" onClick={reset}>finish</div>
+      <div className=" bg-gradient-to-r from-theme_color1 to-theme_color4 rounded-2xl py-5 mt-5 mb-20">
+        <div className="grid grid-cols-3 gap-6 content-center">
+          <div className="flex justify-center rounded-2xl bg-theme_color2 py-3 z-10 mx-2 z-20 shadow" onClick={start}>start</div>
+          <div className="flex justify-center rounded-2xl bg-theme_color2 py-3 z-10 mx-2 z-20 shadow" onClick={pause}>stop</div>
+          <div className="flex justify-center rounded-2xl bg-theme_color2 py-3 z-10 mx-2 z-20 shadow" onClick={reset}>finish</div>
+        </div>
       </div>
     </>
   );
