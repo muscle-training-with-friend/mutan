@@ -5,7 +5,7 @@ const BASE_URL = "https://mutan.azurewebsites.net";
  *
  * @param {{ token: string }} cx
  *
- * @returns {{ token: string }}
+ * @returns {Promise<{ token: string }>}
  */
 export async function getUser(cx) {
   const reply = await fetch(BASE_URL + "/get_user", {
@@ -22,7 +22,7 @@ export async function getUser(cx) {
 /**
  * ユーザの生成
  *
- * @returns {{ token: string }}
+ * @returns {Promise<{ token: string }>}
  */
 export async function createUser() {
   const reply = await fetch(BASE_URL + "/create_user");
@@ -50,7 +50,7 @@ export async function deleteUser(cx) {
  *
  * @param {{ user_token: string }} cx
  *
- * @returns {{ 
+ * @returns {Promise<{ 
  *   id: number,
  *   name: string,
  *   description: string?,
@@ -62,7 +62,7 @@ export async function deleteUser(cx) {
  *     weight_value: f64,
  *     count_value: i32,
  *   }[],
- * }[]}
+ * }[]>}
  */
 export async function getTasks(cx) {
   const reply = await fetch(BASE_URL + "/get_tasks", {
@@ -81,7 +81,7 @@ export async function getTasks(cx) {
  *
  * @param {{ user_token: string, id: number }} cx
  *
- * @returns {{ 
+ * @returns {Promise<{ 
  *   id: number,
  *   name: string,
  *   description: string?,
@@ -93,7 +93,7 @@ export async function getTasks(cx) {
  *     weight_value: f64,
  *     count_value: i32,
  *   }[],
- * }}
+ * }>}
  */
 export async function getTask(cx) {
   const reply = await fetch(BASE_URL + "/get_task", {
@@ -147,7 +147,7 @@ export async function deleteTask(cx) {
  *
  * @param {{ user_token: string }} cx
  *
- * @returns {{ 
+ * @returns {Promise<{ 
  *   id: number,
  *   task_id: number,
  *   name: string,
@@ -160,7 +160,7 @@ export async function deleteTask(cx) {
  *     weight_value: f64,
  *     count_value: i32,
  *   }[],
- * }[]}
+ * }[]>}
  */
 export async function getTaskInstances(cx) {
   const reply = await fetch(BASE_URL + "/get_task_instances", {
@@ -178,7 +178,7 @@ export async function getTaskInstances(cx) {
  * 単体の進行中のタスクを取得
  * @param {{ user_token: string, id: number }} cx
  *
- * @returns {{ 
+ * @returns {Promise<{
  *   id: number,
  *   task_id: number,
  *   name: string,
@@ -191,7 +191,7 @@ export async function getTaskInstances(cx) {
  *     weight_value: f64,
  *     count_value: i32,
  *   }[],
- * }}
+ * }>}
  */
 export async function getTaskInstance(cx) {
   const reply = await fetch(BASE_URL + "/get_task_instance", {
@@ -211,15 +211,11 @@ export async function getTaskInstance(cx) {
  * @param {{ user_token: string, task_id: number }} cx
  */
 export async function createTaskInstance(cx) {
-  const reply = await fetch(BASE_URL + "/create_task_instance", {
+  await fetch(BASE_URL + "/create_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cx)
-  });
-  const json = await reply.json();
-
-  console.log(json);
-  return json;
+  })
 }
 
 /**
@@ -227,20 +223,16 @@ export async function createTaskInstance(cx) {
  *
  * @param {{
  *   user_token: string,
- *   task_id: number,
+ *   id: number,
  *   progress_value: number,
  * }} cx
  */
 export async function proceedTaskInstance(cx) {
-  const reply = await fetch(BASE_URL + "/proceed_task_instance", {
+  await fetch(BASE_URL + "/proceed_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cx)
-  });
-  const json = await reply.json();
-
-  console.log(json);
-  return json;
+  })
 }
 
 /**
@@ -251,16 +243,12 @@ export async function proceedTaskInstance(cx) {
  *   id: number,
  * }} cx
  */
-export async function proceedTaskInstance(cx) {
-  const reply = await fetch(BASE_URL + "/delete_task_instance", {
+export async function deleteTaskInstance(cx) {
+  await fetch(BASE_URL + "/delete_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cx)
   });
-  const json = await reply.json();
-
-  console.log(json);
-  return json;
 }
 
 /**
@@ -268,13 +256,13 @@ export async function proceedTaskInstance(cx) {
  *
  * @param {{ offset: number, size: number }} cx
  *
- * @returns {{
+ * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
  *   default_weight_value: number,
  *   default_count_value: number,
- * }}
+ * }>}
  */
 export async function getTrainings(cx) {
   const reply = await fetch(BASE_URL + "/get_trainings", {
@@ -293,15 +281,15 @@ export async function getTrainings(cx) {
  *
  * @param {{ id: number }} cx
  *
- * @returns {{
+ * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
  *   default_weight_value: number,
  *   default_count_value: number,
- * }}
+ * }>}
  */
-export async function getTrainings(cx) {
+export async function getTraining(cx) {
   const reply = await fetch(BASE_URL + "/get_training", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
