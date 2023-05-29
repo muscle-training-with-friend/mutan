@@ -14,7 +14,7 @@ module.exports = {
         inverted_text: "#FFF",
         muted_text: "#555",
         muted_bg: "#EEE",
-        bg: "FFF"
+        bg: "#FFF"
       }
     },
   },
