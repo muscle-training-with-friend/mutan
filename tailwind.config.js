@@ -7,14 +7,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accent:'#FF7152',
-        bright_accent:'#FFC89F',
-        glow_accent:'#FF9D7A',
-        text:'222',
-        invert_text:'FFF'
+        accent: "#FF7152",
+        bright_accent: "#FFC89F",
+        mid_accent: "#FF9D7A",
+        text: "#222",
+        inverted_text: "#FFF",
+        muted_text: "#555",
+        muted_bg: "#EEE",
+        bg: "FFF"
       }
     },
-    
   },
   plugins: [],
 }
