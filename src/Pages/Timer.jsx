@@ -17,7 +17,7 @@ export default function () {
         <div className="rounded-full h-80 w-80 bg-gradient-to-r from-theme_color1 to-theme_color4 my-6 p-3">
           <div className="rounded-full h-full w-full bg-white">
             <div className="flex justify-center font-sm pt-16">timer is...</div>
-            <div className="flex justify-center font-sm">{isRunning ? "Running" : "Not Running"}</div>
+            <div className="flex justify-center font-sm">{isRunning ? "running" : "not running"}</div>
             <div className="flex justify-center text-slate-900 text-5xl font-bold pt-10">
               {hours}:{minutes}:{seconds}
             </div>
