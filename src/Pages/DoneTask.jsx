@@ -6,9 +6,9 @@ export default function () {
       <div className="font-bold text-slate-600">タスクの実行</div>
       <Link to="/timer">トレーニングを開始</Link>
       <div className="font-bold text-slate-600 text-3xl">タスクの実行</div>
-      <div className="text-3xl">おすすめのメニュー(1日)</div>{/*メニュー名*/}
-      <div className="rounded-lg bg-gradient-to-r from-fuchsia-500 to-cyan-500 h-40 m-5">
-        <div className="text-2xl p-5 text-white">ベンチ</div></div>
+      <div className="text-3xl text-text">おすすめのメニュー(1日)</div>{/*メニュー名*/}
+      <div className="rounded-lg bg-gradient-to-br from-bright_accent to-accent h-40 m-5">
+        <div className="text-2xl p-5 text-white text-text">ベンチ</div></div>
       <div className="rounded-lg bg-gradient-to-r from-fuchsia-600 to-purple-600 h-40 m-5">
         <div className="text-2xl p-5 text-white">ベンチ</div></div>
       <div className="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 h-40 m-5">
