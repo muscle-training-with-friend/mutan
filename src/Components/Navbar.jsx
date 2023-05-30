@@ -11,7 +11,7 @@ export default function () {
             home
           </span>
         </div>
-        <div className="flex justify-center text-sm text-text">
+        <div className="flex justify-center text-sm text-muted_text">
           ホーム
         </div>
       </Link>
@@ -23,7 +23,7 @@ export default function () {
             leaderboard
           </span>
         </div>
-        <div className="flex justify-center text-sm text-text">
+        <div className="flex justify-center text-sm text-muted_text">
           統計
         </div>
       </Link>
@@ -35,7 +35,7 @@ export default function () {
             add_task
           </span>
         </div>
-        <div className="flex justify-center text-sm text-text">
+        <div className="flex justify-center text-sm text-muted_text">
           タスク
         </div>
       </Link>
@@ -47,7 +47,7 @@ export default function () {
             palette
           </span>
         </div>
-        <div className="flex justify-center text-sm text-text">
+        <div className="flex justify-center text-sm text-muted_text">
           着せ替え
         </div>
       </Link>
@@ -59,7 +59,7 @@ export default function () {
             people
           </span>
         </div>
-        <div className="flex justify-center text-sm text-text">
+        <div className="flex justify-center text-sm text-muted_text">
           友達
         </div>
       </Link>
