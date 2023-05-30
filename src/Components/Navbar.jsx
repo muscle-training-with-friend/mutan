@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function () {
   return (
-    <div className="grid grid-cols-5 gap-3 mb-8 pt-6 pb-4 px-2 bottom-0 bg-gradient-to-br from-bright_accent to-accent rounded-2xl">
+    <div className="absolute inset-x-0 bottom-0 grid grid-cols-5 gap-3 mb-8 pt-6 pb-4 mx-4 bg-gradient-to-br from-bright_accent to-accent rounded-2xl">
       <Link to="/home">
         <div className="flex justify-center text-white">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
