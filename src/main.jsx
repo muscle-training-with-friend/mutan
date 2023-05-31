@@ -14,6 +14,7 @@ import Timer from "./Pages/Timer";
 import Statistics from "./Pages/Statistics";
 import AllTrainings from "./Pages/AllTrainings";
 import "./index.css";
+import { TokenContextProvider } from "./Components/TokenContext";
 
 const router = createBrowserRouter(
   [
@@ -70,6 +71,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <TokenContextProvider>
+      <RouterProvider router={router} />
+    </TokenContextProvider>
   </React.StrictMode>
 );
