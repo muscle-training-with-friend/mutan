@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../Components/TokenContext";
 import { createTask } from "../adapter";
+import { SelectTraining } from "./AddTraining";
 
-export default function () {
+export default function (props) {
 
   const [trainings, setTrainings] = useState([]);
 
