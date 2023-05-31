@@ -1,9 +1,26 @@
 import { Link } from "react-router-dom";
+import { React,useState,useEffect,useContext } from "react";
+import { getTasks } from "../adapter";
+import { TokenContext } from "../Components/TokenContext";
 
 export default function () {
+
+  const [tasks, setTasks] = useState([]);
+  const token = useContext(TokenContext);
+
+  const fn = async () => {
+    const res = await getTasks({ user_token: token });
+    setTasks(res);
+  };
+
+  useEffect(() => {
+    fn();
+  }, []);
+
   return (
     <>
       <div className="text-text">
+        <div>{token}</div>
         <div className="font-bold text-2xl">最近のタスク</div>
         <div className="rounded-3xl my-5 p-6 bg-gradient-to-br from-bright_accent to-accent">
           <Link to="/doneTask">
@@ -30,8 +47,10 @@ export default function () {
           <Link to="/doneTask">
             <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
             <div className="py-3">
-              <div className="text-sm">・ベンチ40kg10回</div>
-              <div className="text-sm">・スクワット10回</div>
+              {tasks.map(
+                tasks =>
+                  <div className="text-sm">{tasks.name}</div>
+              )}
             </div>
           </Link>
         </div>
