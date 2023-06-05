@@ -11,7 +11,7 @@ export async function getUser(cx) {
   const reply = await fetch(BASE_URL + "/get_user", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -23,6 +23,7 @@ export async function getUser(cx) {
  * ユーザの生成
  *
  * @returns {Promise<{ token: string }>}
+ *
  */
 export async function createUser() {
   const reply = await fetch(BASE_URL + "/create_user");
@@ -41,26 +42,34 @@ export async function deleteUser(cx) {
   await fetch(BASE_URL + "/delete_user", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
 }
 
 /**
  * すべてのタスクの取得
  *
- * @param {{ user_token: string }} cx
+ * @param {{
+ *   token: string,
+ *   offset: number,
+ *   limit: number,
+ *   order_by: "name" | "times" | "latest",
+ *   descending: bool,
+ * }} cx
  *
- * @returns {Promise<{ 
+ * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
+ *   done_times: number,
+ *   latest_done_at: string?,
  *   training_instances: {
  *     id: number,
  *     training_id: number,
+ *     weight: number,
+ *     times: number,
  *     name: string,
  *     description: string?,
- *     weight_value: f64,
- *     count_value: i32,
  *   }[],
  * }[]>}
  */
@@ -68,7 +77,7 @@ export async function getTasks(cx) {
   const reply = await fetch(BASE_URL + "/get_tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -79,19 +88,21 @@ export async function getTasks(cx) {
 /**
  * 単体のタスクの取得
  *
- * @param {{ user_token: string, id: number }} cx
+ * @param {{ token: string, id: number }} cx
  *
- * @returns {Promise<{ 
+ * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
+ *   done_times: number,
+ *   latest_done_at: string?,
  *   training_instances: {
  *     id: number,
  *     training_id: number,
+ *     weight: number,
+ *     times: number,
  *     name: string,
  *     description: string?,
- *     weight_value: f64,
- *     count_value: i32,
  *   }[],
  * }>}
  */
@@ -99,7 +110,7 @@ export async function getTask(cx) {
   const reply = await fetch(BASE_URL + "/get_task", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -111,62 +122,23 @@ export async function getTask(cx) {
  * タスクの追加
  *
  * @param {{
- *   user_token: string,
+ *   token: string,
  *   name: string,
  *   description: string?,
  *   training_instances: {
  *     training_id: number,
- *     weight_value: number,
- *     count_value: number,
+ *     weight: number,
+ *     times: number,
  *   }[],
  * }} cx
+ *
+ * @returns {Promise<{ id: number }>}
  */
 export async function createTask(cx) {
-  await fetch(BASE_URL + "/create_task", {
+  const reply = await fetch(BASE_URL + "/create_task", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
-  });
-}
-
-/**
- * タスクの削除
- *
- * @param {{ user_token: string, id: number }} cx
- */
-export async function deleteTask(cx) {
-  await fetch(BASE_URL + "/delete_task", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
-  });
-}
-
-/**
- * すべての進行中のタスクの取得
- *
- * @param {{ user_token: string }} cx
- *
- * @returns {Promise<{ 
- *   id: number,
- *   task_id: number,
- *   name: string,
- *   description: string?,
- *   training_instances: {
- *     id: number,
- *     training_id: number,
- *     name: string,
- *     description: string?,
- *     weight_value: f64,
- *     count_value: i32,
- *   }[],
- * }[]>}
- */
-export async function getTaskInstances(cx) {
-  const reply = await fetch(BASE_URL + "/get_task_instances", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -175,21 +147,36 @@ export async function getTaskInstances(cx) {
 }
 
 /**
- * 単体の進行中のタスクを取得
- * @param {{ user_token: string, id: number }} cx
+ * タスクの削除
+ *
+ * @param {{ token: string, id: number }} cx
+ */
+export async function deleteTask(cx) {
+  await fetch(BASE_URL + "/delete_task", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cx),
+  });
+}
+
+/**
+ * 進行中のタスクを取得
+ *
+ * @param {{ token: string }} cx
  *
  * @returns {Promise<{
  *   id: number,
  *   task_id: number,
+ *   progress: i32,
  *   name: string,
  *   description: string?,
  *   training_instances: {
  *     id: number,
  *     training_id: number,
+ *     weight: number,
+ *     times: number,
  *     name: string,
  *     description: string?,
- *     weight_value: f64,
- *     count_value: i32,
  *   }[],
  * }>}
  */
@@ -197,7 +184,7 @@ export async function getTaskInstance(cx) {
   const reply = await fetch(BASE_URL + "/get_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -208,67 +195,71 @@ export async function getTaskInstance(cx) {
 /**
  * 進行中のタスクを追加
  *
- * @param {{ user_token: string, task_id: number }} cx
+ * @param {{ token: string, task_id: number }} cx
  */
 export async function createTaskInstance(cx) {
   await fetch(BASE_URL + "/create_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
-  })
+    body: JSON.stringify(cx),
+  });
 }
 
 /**
  * 進行中のタスクを進行
  *
- * @param {{
- *   user_token: string,
- *   id: number,
- *   progress_value: number,
- * }} cx
+ * @param {{ token: string, progress: number }} cx
  */
 export async function proceedTaskInstance(cx) {
   await fetch(BASE_URL + "/proceed_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
-  })
+    body: JSON.stringify(cx),
+  });
 }
 
 /**
- * 進行中のタスクを削除
+ * 進行中のタスクを削除・完了
  *
- * @param {{
- *   user_token: string,
- *   id: number,
- * }} cx
+ * @param {{ token: string }} cx
  */
 export async function deleteTaskInstance(cx) {
   await fetch(BASE_URL + "/delete_task_instance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
 }
 
 /**
  * すべてのトレーニングを取得
  *
- * @param {{ offset: number, size: number }} cx
+ * @param {{
+ *   token: string,
+ *   offset: number,
+ *   limit: number
+ *   order_by: "name" | "times" | "latest",
+ *   descending: bool,
+ *   search: string?,
+ *   tag: string?,
+ * }} cx
  *
  * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
- *   default_weight_value: number,
- *   default_count_value: number,
- * }>}
+ *   weight: number,
+ *   times: number,
+ *   tags: string[],
+ *   done_times: number,
+ *   latest_done_at: string?,
+ * }[]>}
  */
 export async function getTrainings(cx) {
   const reply = await fetch(BASE_URL + "/get_trainings", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
@@ -279,21 +270,52 @@ export async function getTrainings(cx) {
 /**
  * 単体のトレーニングを取得
  *
- * @param {{ id: number }} cx
+ * @param {{ token: string, id: number }} cx
  *
  * @returns {Promise<{
  *   id: number,
  *   name: string,
  *   description: string?,
- *   default_weight_value: number,
- *   default_count_value: number,
+ *   weight: number,
+ *   times: number,
+ *   tags: string[],
+ *   done_times: number,
+ *   latest_done_at: string?,
  * }>}
  */
 export async function getTraining(cx) {
   const reply = await fetch(BASE_URL + "/get_training", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cx)
+    body: JSON.stringify(cx),
+  });
+  const json = await reply.json();
+
+  console.log(json);
+  return json;
+}
+
+/**
+ * トレーニングの時系列データを取得
+ *
+ * @param {{
+ *   token: string,
+ *   from: string,
+ *   to: string,
+ *   descending: bool,
+ *   tag: string?,
+ * }} cx
+ *
+ * @returns {Promise<{
+ *   at: string,
+ *   times: number,
+ * }>}
+ */
+export async function getTimeSeries(cx) {
+  const reply = await fetch(BASE_URL + "/get_time_series", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cx),
   });
   const json = await reply.json();
 
