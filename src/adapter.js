@@ -23,7 +23,6 @@ export async function getUser(cx) {
  * ユーザの生成
  *
  * @returns {Promise<{ token: string }>}
- *
  */
 export async function createUser() {
   const reply = await fetch(BASE_URL + "/create_user");
@@ -70,6 +69,7 @@ export async function deleteUser(cx) {
  *     times: number,
  *     name: string,
  *     description: string?,
+ *     tags: string[],
  *   }[],
  * }[]>}
  */
@@ -103,6 +103,7 @@ export async function getTasks(cx) {
  *     times: number,
  *     name: string,
  *     description: string?,
+ *     tags: string[],
  *   }[],
  * }>}
  */
@@ -177,6 +178,7 @@ export async function deleteTask(cx) {
  *     times: number,
  *     name: string,
  *     description: string?,
+ *     tags: string[],
  *   }[],
  * }>}
  */
@@ -300,9 +302,9 @@ export async function getTraining(cx) {
  *
  * @param {{
  *   token: string,
+ *   descending: bool,
  *   from: string,
  *   to: string,
- *   descending: bool,
  *   tag: string?,
  * }} cx
  *
