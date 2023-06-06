@@ -1,18 +1,33 @@
 import { Link } from "react-router-dom";
-import { React,useState,useEffect,useContext } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import { getTasks } from "../adapter";
 import { TokenContext } from "../Components/TokenContext";
+import TaskCard from "../Components/TaskCard";
 
 export default function () {
-
-  const [tasks, setTasks] = useState([]);
   const token = useContext(TokenContext);
+  const [tasks, setTasks] = useState([]);
+  const [latestTasks, setLatestTasks] = useState([]);
 
   const fn = async () => {
-    const res = await getTasks({ user_token: token });
-    setTasks(res);
-  };
+    const tasks = await getTasks({
+      token,
+      offset: 0,
+      limit: 20,
+      order_by: "times",
+      descending: true,
+    });
+    setTasks(tasks);
 
+    const latestTasks = await getTasks({
+      token,
+      offset: 0,
+      limit: 2,
+      order_by: "latest",
+      descending: true,
+    });
+    setLatestTasks(latestTasks);
+  };
   useEffect(() => {
     fn();
   }, []);
@@ -20,52 +35,45 @@ export default function () {
   return (
     <>
       <div className="text-text">
-        <div>{token}</div>
-        <div className="font-bold text-2xl">最近のタスク</div>
-        <div className="rounded-3xl my-5 p-6 bg-gradient-to-br from-bright_accent to-accent">
-          <Link to="/doneTask">
-            <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
-            <div className="py-3">
-              <div className="text-sm">・ベンチ80kg10回</div>
-              <div className="text-sm">・スクワット30回</div>
-            </div>
-          </Link>
-        </div>
+        {latestTasks.length != 0 ? (
+          <>
+            <div className="text-2xl font-bold">最近のタスク</div>
+            {latestTasks.map((task) => (
+              <TaskCard task={task} />
+            ))}
+          </>
+        ) : undefined}
 
-        <div className="rounded-3xl my-5 p-6 bg-gradient-to-br from-bright_accent to-accent">
-          <Link to="/doneTask">
-            <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
-            <div className="py-3">
-              <div className="text-sm">・ベンチ60kg10回</div>
-              <div className="text-sm">・スクワット20回</div>
-            </div>
-          </Link>
-        </div>
+        {tasks.length != 0 ? (
+          <>
+            <div className="text-2xl font-bold">すべてのタスク</div>
+            {tasks.map((task) => (
+              <TaskCard task={task} />
+            ))}
+          </>
+        ) : undefined}
 
-        <div className="font-bold text-slate-900 text-2xl">すべてのタスク</div>
-        <div className="rounded-3xl my-5 p-6 bg-gradient-to-br from-bright_accent to-accent">
-          <Link to="/doneTask">
-            <div className="font-bold text-lg flex justify-center">おすすめのメニュー(1日)</div>
-            <div className="py-3">
-              {tasks.map(
-                tasks =>
-                  <div className="text-sm">{tasks.name}</div>
-              )}
-            </div>
-          </Link>
-        </div>
-
-        <div className="rounded-3xl bg-bright_accent my-5 p-6">
-          <Link to="/createTask">
+        <Link to="/createTask">
+          <div className="my-5 rounded-3xl bg-bright_accent p-6">
             <div className="flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-7 h-7">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.2"
+                stroke="currentColor"
+                className="h-7 w-7"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
-              <div className="text-lg ml-1">タスクを追加する</div>
+              <div className="ml-1 text-lg">タスクを追加する</div>
             </div>
-          </Link>
-        </div>
-
+          </div>
+        </Link>
       </div>
     </>
   );
