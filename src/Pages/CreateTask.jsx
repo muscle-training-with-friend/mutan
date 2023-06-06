@@ -1,37 +1,88 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import TrainingInstanceCard from "../Components/TrainingInstanceCard";
+import Modal from "../Components/Modal";
+import { createTask } from "../adapter";
+import { TokenContext } from "../Components/TokenContext";
+import TrainingInstanceBuilder from "../Components/TrainingInstanceBuilder";
+import { useNavigate } from "react-router-dom";
 
 export default function () {
+  const navigate = useNavigate();
+  const token = useContext(TokenContext);
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+    training_instances: [],
+  });
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const createTaskInstanceFn = (training_instance) => {
+    setForm((prev) => ({
+      ...prev,
+      training_instances: [...prev.training_instances, training_instance],
+    }));
+    setModalVisible(false);
+  };
+
+  const createTaskFn = async () => {
+    const striped = {
+      ...form,
+      training_instances: form.training_instances.map((training_instance) => ({
+        training_id: training_instance.id,
+        weight: training_instance.weight,
+        times: training_instance.times,
+      })),
+    };
+    await createTask({ ...striped, token });
+
+    navigate("/tasks");
+  };
+
   return (
     <>
+      <Modal visible={modalVisible} closeFn={(_) => setModalVisible(false)}>
+        <TrainingInstanceBuilder build={createTaskInstanceFn} />
+      </Modal>
+
       <div className="text-text">
-        <div className="rounded-lg bg-gradient-to-br from-bright_accent to-accent mb-6 p-6">
-          <div className="rounded-lg text-lg font-bold bg-bright_accent mr-60 px-4 py-2">新規タスク</div>
-          <div className="rounded-lg text-sm bg-bright_accent px-4 py-10 mt-6">
-            <div>
-              新しいタスクです。
-            </div>
+        <div className="mb-6 rounded-lg bg-gradient-to-br from-bright_accent to-accent p-6">
+          <input
+            type="text"
+            value={form.name}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, name: e.target.value }))
+            }
+            className="w-full rounded-lg bg-bright_accent p-2"
+            placeholder="タスク名"
+          />
+
+          <textarea
+            rows="3"
+            value={form.description}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, description: e.target.value }))
+            }
+            className="mt-6 w-full rounded-lg bg-bright_accent p-2"
+            placeholder="説明"
+          />
+        </div>
+
+        {form.training_instances.map((training_instance) => (
+          <TrainingInstanceCard training_instance={training_instance} />
+        ))}
+
+        <div onClick={(_) => setModalVisible(true)}>
+          <div className="my-6 flex justify-center rounded-lg bg-bright_accent p-6">
+            <div className="text-lg ">トレーニングを追加</div>
           </div>
         </div>
 
-        <div className="rounded-lg bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
-          <div className="text-lg font-bold flex justify-center">ベンチ</div>
-          <div className="text-sm">・ベンチ60kg10回</div>
+        <div onClick={createTaskFn}>
+          <div className="my-6 flex justify-center rounded-lg bg-bright_accent p-6">
+            <div className="text-lg ">完了</div>
+          </div>
         </div>
-
-        <div className="rounded-lg bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
-          <div className="text-lg font-bold flex justify-center">ベンチ</div>
-          <div className="text-sm">・ベンチ60kg10回</div>
-        </div>
-
-
-        <Link to="/addTraining">
-          <div className="rounded-lg bg-bright_accent flex justify-center my-6 p-6">
-            <div className="text-lg ">トレーニングを追加</div>
-          </div >
-
-        </Link>
       </div>
-
     </>
   );
 }
