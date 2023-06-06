@@ -45,14 +45,14 @@ export default function () {
       </Modal>
 
       <div className="text-text">
-        <div className="mb-6 rounded-lg bg-gradient-to-br from-bright_accent to-accent p-6">
+        <div className="mb-6 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-6">
           <input
             type="text"
             value={form.name}
             onChange={(e) =>
               setForm((prev) => ({ ...prev, name: e.target.value }))
             }
-            className="w-full rounded-lg bg-bright_accent p-2"
+            className="w-full rounded-2xl bg-bright_accent p-2"
             placeholder="タスク名"
           />
 
@@ -62,7 +62,7 @@ export default function () {
             onChange={(e) =>
               setForm((prev) => ({ ...prev, description: e.target.value }))
             }
-            className="mt-6 w-full rounded-lg bg-bright_accent p-2"
+            className="mt-6 w-full rounded-2xl bg-bright_accent p-2"
             placeholder="説明"
           />
         </div>
@@ -72,14 +72,14 @@ export default function () {
         ))}
 
         <div onClick={(_) => setModalVisible(true)}>
-          <div className="my-6 flex justify-center rounded-lg bg-bright_accent p-6">
+          <div className="my-6 flex justify-center rounded-2xl bg-bright_accent p-6">
             <div className="text-lg ">トレーニングを追加</div>
           </div>
         </div>
 
         <div onClick={createTaskFn}>
-          <div className="my-6 flex justify-center rounded-lg bg-bright_accent p-6">
-            <div className="text-lg ">完了</div>
+          <div className="my-6 flex justify-center rounded-2xl bg-bright_accent bg-gradient-to-br from-bright_accent to-accent p-6 text-text hover:bg-accent hover:text-inverted_text">
+            <div className="text-lg font-bold ">完了</div>
           </div>
         </div>
       </div>

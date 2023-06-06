@@ -25,8 +25,13 @@ export default function ({ build }) {
     <>
       <div className="font-bold">すべてのトレーニング</div>
       {trainings.map((training) => (
-        <div onClick={(_) => setCursor(training)}>
+        <div
+          onClick={(_) => setCursor(training)}
+          className="mb-3 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-3"
+        >
           <div>{training.name}</div>
+          <div>重量(デフォルト): {training.weight}</div>
+          <div>回数(デフォルト): {training.times}</div>
         </div>
       ))}
 
