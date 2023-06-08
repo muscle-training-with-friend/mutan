@@ -1,48 +1,54 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getTrainings } from "../adapter";
+import { TokenContext } from "../Components/TokenContext";
 
 export default function () {
   const [trainings, setTrainings] = useState([]);
+  const token = useContext(TokenContext);
+  let set_order = "name"
+
 
   const fn = async () => {
-      const res = await getTrainings({ offset: 0, size: 20 });
-      setTrainings(res);
+    const res = await getTrainings({
+      token: token,
+      offset: 0,
+      limit: 20,
+      order_by: "name",
+      descending: true,
+      search: null,
+      tag: null
+    });
+    setTrainings(res);
   };
 
   useEffect(() => { fn(); }, []);
 
+  const name_line = () => {
+    set_order = "name"
+  }
+  const times_line = () => {
+    set_order = "times"
+  }
+  const latest_line = () => {
+    set_order = "latest"
+  }
+
+
   return (
     <>
-     
-      
       <div className="font-bold text-slate-600">トレーニングの一覧</div>
-      
-      {trainings.map(training => <div>{training.name}</div>)}
-<div className="text-xl">胸のトレーニング</div>
-<div className="rounded-sm bg-red-100 my-5 p-6 ">
-<div className="flex justify-center"> 
-<div className="text-2xl bg-red-100 inline-flex rounded-md ">ベンチプレス</div>
-</div>
-</div>
-<div className="text-xl">脚のトレーニング</div>
-<div className="flex justify-center"> 
-<div className="text-2xl bg-9 inline-flex rounded ">スクワット</div>
+      <button onclick={name_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">名前順</button>
+      <button onclick={times_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">回数順</button>
+      <button onclick={latest_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">最近</button>
+      <div>
+        {trainings.length != 0 ? (
+          <>
+            {trainings.map((training) => (
+              <div>{training.name}</div>
+            ))}
+          </>
+        ) : undefined}
       </div>
-
-      <div className="text-xl">背中のトレーニング</div>
-      <div className="flex justify-center"> 
-      <div className="text-2xl bg-red-100 inline-flex rounded ">チンニング</div>
-      </div>
-      <div className="text-xl">腕のトレーニング</div>
-      <div className="flex justify-center"> 
-      <div className="text-2xl bg-red-100 inline-flex rounded ">アームカール</div>
-      </div>
-      <div className="text-xl">腹筋のトレーニング</div>
-      <div className="flex justify-center"> 
-      <div className="text-2xl bg-red-100 inline-flex rounded ">アクトレの腹筋プログラム</div>
-      </div>
-      
-  
     </>
   );
 }
