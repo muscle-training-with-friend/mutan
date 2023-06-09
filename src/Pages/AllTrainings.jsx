@@ -44,7 +44,7 @@ export default function () {
         {trainings.length != 0 ? (
           <>
             {trainings.map((training) => (
-              <div>{training.name}</div>
+              <div>{training.name}:{training.weight}kg:{training.times}回</div>
             ))}
           </>
         ) : undefined}
