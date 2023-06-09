@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { React, useState, useEffect, useContext } from "react";
 import { getTaskInstance } from "../adapter";
 import { TokenContext } from "../Components/TokenContext";
-import TaskCard from "../Components/DoneTaskCard";
+import DoneTaskCard from "../Components/DoneTaskCard";
 
 export default function () {
   const token = useContext(TokenContext);
@@ -30,7 +30,7 @@ export default function () {
           <>
             <div className="text-2xl font-bold">実行中のメニュー</div>
             {doneTasks.map((task) => (
-              <TaskCard task={task} />
+              <DoneTaskCard task={task} />
             ))}
           </>
         ) : undefined}
