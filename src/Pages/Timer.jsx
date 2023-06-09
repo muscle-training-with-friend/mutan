@@ -6,8 +6,14 @@ export default function () {
   const { seconds, minutes, isRunning, start, pause, reset } =
     useStopwatch({ autoStart: false });
 
+
   return (
     <>
+      <div className="rounded-2xl bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
+        <div className="font-bold text-xl flex justify-center">ベンチ</div>
+        <div className="text-sm my-2">・ベンチ30kg10回</div>
+      </div>
+
       <div className="rounded-2xl bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
         <div className="font-bold text-xl flex justify-center">ベンチ</div>
         <div className="text-sm my-2">・ベンチ30kg10回</div>
@@ -20,7 +26,7 @@ export default function () {
         <div className="rounded-full h-80 w-80 bg-gradient-to-br from-bright_accent to-accent my-6 p-3">
           <div className="rounded-full h-full w-full bg-white">
             <div className="flex justify-center text-slate-900 text-7xl font-bold pt-24">
-              {minutes}:{seconds}
+              {minutes >= 10 ? minutes: ("0"+minutes)}:{seconds >= 10 ? seconds:("0"+seconds)}
             </div>
           </div>
         </div>
