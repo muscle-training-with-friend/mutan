@@ -40,13 +40,15 @@ export default function () {
       <button onclick={name_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">名前順</button>
       <button onclick={times_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">回数順</button>
       <button onclick={latest_line} className="px-2 py-1 bg-blue-400 text-white font-semibold rounded hover:bg-blue-500">最近</button>
+
       <div>
         {trainings.length != 0 ? (
           <>
             {trainings.map((training) => (
-              <div>
-                {training.name}:{training.weight}kg:{training.times}回
-                </div>
+              <div className="rounded-2xl bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
+                <div className="font-bold text-xl flex justify-center">{training.name}</div>
+                <div  className="text-sm my-2">{training.weight}kg:{training.times}回</div>
+              </div>
             ))}
           </>
         ) : undefined}
