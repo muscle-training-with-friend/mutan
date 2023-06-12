@@ -14,11 +14,6 @@ export default function () {
         <div className="text-sm my-2">・ベンチ30kg10回</div>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
-        <div className="font-bold text-xl flex justify-center">ベンチ</div>
-        <div className="text-sm my-2">・ベンチ30kg10回</div>
-      </div>
-
       <div className="flex justify-center font-sm pt-16 text-muted_text">timer is...
         <div className="flex justify-center font-sm">{isRunning ? "running" : "not running"}</div>
       </div>
