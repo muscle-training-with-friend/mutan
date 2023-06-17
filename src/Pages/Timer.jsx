@@ -1,7 +1,22 @@
 import React from "react";
 import { useStopwatch } from 'react-timer-hook';
+import { TokenContext } from "../Components/TokenContext";
+import { useState, useContext, useEffect } from "react";
+import { getTaskInstance } from "../adapter";
 
 export default function () {
+  const token = useContext(TokenContext)
+  const [tasks, setTasks] = useState([]);
+
+  const fn = async () => {
+    const tasks = await getTaskInstance({
+      token,
+    });
+    setTasks(tasks);
+  }
+  useEffect(() => {
+    fn();
+  }, []);
 
   const { seconds, minutes, isRunning, start, pause, reset } =
     useStopwatch({ autoStart: false });
@@ -9,10 +24,13 @@ export default function () {
 
   return (
     <>
-      <div className="rounded-2xl bg-gradient-to-br from-bright_accent to-accent my-6 p-6">
-        <div className="font-bold text-xl flex justify-center">ベンチ</div>
-        <div className="text-sm my-2">・ベンチ30kg10回</div>
-      </div>
+      {tasks.length != 0 ? (
+        <>
+          {tasks.training_instances.map((task) => (
+            <div className="font-bold text-xl flex justify-center">{task.name}</div>
+          ))}
+        </>
+      ) : undefined}
 
       <div className="flex justify-center font-sm pt-16 text-muted_text">timer is...
         <div className="flex justify-center font-sm">{isRunning ? "running" : "not running"}</div>
@@ -21,7 +39,7 @@ export default function () {
         <div className="rounded-full h-80 w-80 bg-gradient-to-br from-bright_accent to-accent my-6 p-3">
           <div className="rounded-full h-full w-full bg-white">
             <div className="flex justify-center text-slate-900 text-7xl font-bold pt-24">
-              {minutes >= 10 ? minutes: ("0"+minutes)}:{seconds >= 10 ? seconds:("0"+seconds)}
+              {minutes >= 10 ? minutes : ("0" + minutes)}:{seconds >= 10 ? seconds : ("0" + seconds)}
             </div>
           </div>
         </div>
