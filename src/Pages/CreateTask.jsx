@@ -40,7 +40,7 @@ export default function () {
 
   return (
     <>
-      <Modal visible={modalVisible} closeFn={(_) => setModalVisible(false)}>
+      <Modal visible={modalVisible}>
         <TrainingInstanceBuilder build={createTrainingInstanceFn} />
       </Modal>
 
