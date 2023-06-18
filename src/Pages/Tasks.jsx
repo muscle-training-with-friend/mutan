@@ -54,7 +54,7 @@ export default function () {
           </>
         ) : undefined}
 
-        <Link to="/createTask">
+        <Link to="/task_create">
           <div className="my-5 rounded-3xl bg-bright_accent p-6">
             <div className="flex justify-center">
               <svg

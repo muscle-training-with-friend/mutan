@@ -26,7 +26,7 @@ export default function () {
   const startTask = async () => {
     try {
       await createTaskInstance({ token, task_id: parseInt(id) });
-      navigate("/timer");
+      navigate("/task_run");
     } catch (error) {
       setModalVisible(true);
     }
