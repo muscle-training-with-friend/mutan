@@ -1,33 +1,39 @@
 import { Link } from "react-router-dom";
+import { React, useState, useEffect, useContext } from "react";
 import { getTaskInstance } from "../adapter";
 import { TokenContext } from "../Components/TokenContext";
-import { React, useState, useEffect, useContext } from "react";
+import DoneTaskCard from "../Components/DoneTaskCard";
 
 export default function () {
   const token = useContext(TokenContext);
-  const [train, setTrain] = useState([]);
+  const [doneTasks, setdoneTasks] = useState([]);
 
-  const fn = async () => {
-    const training = await getTaskInstance({ token });
-    setTrain(training);
-  };
+  const fn = async ()=>{
+    const doneTasks = await getTaskInstance({
+      token,
+      offset: 0,
+      limit: 20,
+      order_by: "times",
+      descending: true,
+    });
+    setdoneTasks(doneTasks);
+  }
+
   useEffect(() => {
     fn();
   }, []);
 
 
   return (
-    <>
-      {train.length != 0 ? (
-        <>
-          <div className="font-bold text-slate-600">タスクの実行</div>
-          {train.training_instances.map((task) => (
-            <div>{task.name}</div>
-          ))}
-        </>
-      ) : undefined}
-
-      <Link to="/timer">トレーニングを開始</Link>
-    </>
+    <div className="text-text">
+        {doneTasks.length != 0 ? (
+          <>
+            <div className="text-2xl font-bold">実行中のメニュー</div>
+            {doneTasks.map((task) => (
+              <DoneTaskCard task={task} />
+            ))}
+          </>
+        ) : undefined}
+    </div>
   );
 }
