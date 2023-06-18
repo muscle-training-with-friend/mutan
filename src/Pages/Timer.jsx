@@ -2,11 +2,27 @@ import React from "react";
 import { useStopwatch } from 'react-timer-hook';
 import { TokenContext } from "../Components/TokenContext";
 import { useState, useContext, useEffect } from "react";
-import { getTaskInstance } from "../adapter";
+import { getTaskInstance, proceedTaskInstance } from "../adapter";
+
+import { createTaskInstance } from "../adapter";
+import { createTask } from "../adapter";
+import { Link } from "react-router-dom";
 
 export default function () {
   const token = useContext(TokenContext)
   const [tasks, setTasks] = useState([]);
+  const [proceed, setproceed] = useState(0);
+
+  const fn1 = async () => {
+    const tasks1 = await createTaskInstance({
+      token,
+      task_id: 16,
+    });
+  }
+  useEffect(() => {
+    fn1();
+    console.log("rendering")
+  }, []);
 
   const fn = async () => {
     const tasks = await getTaskInstance({
@@ -16,19 +32,61 @@ export default function () {
   }
   useEffect(() => {
     fn();
-  }, []);
+  }, [proceed]);
 
   const { seconds, minutes, isRunning, start, pause, reset } =
     useStopwatch({ autoStart: false });
 
+  const current_training = () => {
+    if (proceed != tasks.training_instances.length) {
+      console.log(tasks.training_instances.length)
+      console.log(proceed)
+      const counter = tasks.progress
+      return (
+        <div>
+          <div>{tasks.training_instances[counter].name}</div>
+          <div>{tasks.training_instances[counter].weight} kg : {tasks.training_instances[counter].times} 回</div>
+        </div>
+      );
+    } else {
+      return (
+        <div>good job!</div>
+      );
+    }
+  }
+
+  const next_training = () => {
+    setproceed(proceed + 1)
+    proceedTaskInstance({
+      token,
+      progress: proceed
+    })
+  }
+
+  const button_group = () => {
+    if (proceed != tasks.training_instances.length) {
+      return (
+        <div>
+          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={start}>開始</div>
+          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={pause}>ストップ</div>
+          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={next_training}>完了</div>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]">
+          <Link to="/tasks">完了</Link>
+        </div>
+      );
+    }
+  }
 
   return (
     <>
       {tasks.length != 0 ? (
         <>
-          {tasks.training_instances.map((task) => (
-            <div className="font-bold text-xl flex justify-center">{task.name}</div>
-          ))}
+          {current_training()}
         </>
       ) : undefined}
 
@@ -45,14 +103,15 @@ export default function () {
         </div>
       </div>
 
-
-      <div className="rounded-2xl py-5 my-10">
-        <div className="grid grid-cols-3 gap-6 content-center">
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={start}>start</div>
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={pause}>stop</div>
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={reset}>finish</div>
-        </div>
-      </div>
+      {tasks.length != 0 ? (
+        <>
+          <div className="rounded-2xl py-5 my-10">
+            <div className="grid grid-cols-3 gap-6 content-center">
+              {button_group()}
+            </div>
+          </div>
+        </>
+      ) : undefined}
 
     </>
   );
