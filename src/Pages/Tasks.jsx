@@ -9,7 +9,7 @@ export default function () {
   const [tasks, setTasks] = useState([]);
   const [latestTasks, setLatestTasks] = useState([]);
 
-  const fn = async () => {
+  const fetchTasks = async () => {
     const tasks = await getTasks({
       token,
       offset: 0,
@@ -28,8 +28,9 @@ export default function () {
     });
     setLatestTasks(latestTasks);
   };
+
   useEffect(() => {
-    fn();
+    fetchTasks();
   }, []);
 
   return (

@@ -41,7 +41,7 @@ const router = createBrowserRouter(
               element: <CreateTask />,
             },
             {
-              path: "/doneTask",
+              path: "/doneTask/:id",
               element: <DoneTask />,
             },
             {

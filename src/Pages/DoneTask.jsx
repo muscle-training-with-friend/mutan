@@ -1,39 +1,46 @@
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { React, useState, useEffect, useContext } from "react";
-import { getTaskInstance } from "../adapter";
+import { createTaskInstance, getTask } from "../adapter";
 import { TokenContext } from "../Components/TokenContext";
-import DoneTaskCard from "../Components/DoneTaskCard";
+import TrainingInstanceCard from "../Components/TrainingInstanceCard";
 
 export default function () {
   const token = useContext(TokenContext);
-  const [doneTasks, setdoneTasks] = useState([]);
+  const { id } = useParams();
+  const [task, setTask] = useState(undefined);
+  const navigate = useNavigate();
 
-  const fn = async ()=>{
-    const doneTasks = await getTaskInstance({
-      token,
-      offset: 0,
-      limit: 20,
-      order_by: "times",
-      descending: true,
-    });
-    setdoneTasks(doneTasks);
-  }
+  const fetchTask = async () => {
+    if (token) {
+      const task = await getTask({ token, id: parseInt(id) });
+      setTask(task);
+    }
+  };
 
   useEffect(() => {
-    fn();
-  }, []);
+    fetchTask();
+  }, [token]);
 
+  const startTask = async () => {
+    // panic
+    await createTaskInstance({ token, task_id: parseInt(id) });
+    navigate("/timer");
+  };
 
   return (
     <div className="text-text">
-        {doneTasks.length != 0 ? (
-          <>
-            <div className="text-2xl font-bold">実行中のメニュー</div>
-            {doneTasks.map((task) => (
-              <DoneTaskCard task={task} />
-            ))}
-          </>
-        ) : undefined}
+      {task ? (
+        <>
+          <div>名前 {task.name}</div>
+          <div>説明 {task.description || ""}</div>
+
+          {task.training_instances.map((training_instance) => (
+            <TrainingInstanceCard training_instance={training_instance} />
+          ))}
+
+          <button onClick={startTask}>開始する</button>
+        </>
+      ) : undefined}
     </div>
   );
 }

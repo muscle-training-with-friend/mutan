@@ -1,118 +1,99 @@
 import React from "react";
-import { useStopwatch } from 'react-timer-hook';
+import { useStopwatch } from "react-timer-hook";
 import { TokenContext } from "../Components/TokenContext";
 import { useState, useContext, useEffect } from "react";
-import { getTaskInstance, proceedTaskInstance } from "../adapter";
-
-import { createTaskInstance } from "../adapter";
-import { createTask } from "../adapter";
-import { Link } from "react-router-dom";
+import {
+  deleteTaskInstance,
+  getTaskInstance,
+  proceedTaskInstance,
+} from "../adapter";
+import { useNavigate } from "react-router-dom";
 
 export default function () {
-  const token = useContext(TokenContext)
-  const [tasks, setTasks] = useState([]);
-  const [proceed, setproceed] = useState(0);
+  const token = useContext(TokenContext);
+  const [taskInstance, setTaskInstance] = useState(undefined);
+  const navigate = useNavigate();
 
-  const fn1 = async () => {
-    const tasks1 = await createTaskInstance({
-      token,
-      task_id: 16,
-    });
-  }
+  const fetchTaskInstance = async () => {
+    if (token) {
+      const taskInstance = await getTaskInstance({ token });
+      setTaskInstance(taskInstance);
+    }
+  };
+
   useEffect(() => {
-    fn1();
-    console.log("rendering")
-  }, []);
+    fetchTaskInstance();
+  }, [token]);
 
-  const fn = async () => {
-    const tasks = await getTaskInstance({
-      token,
-    });
-    setTasks(tasks);
-  }
-  useEffect(() => {
-    fn();
-  }, [proceed]);
+  const { seconds, minutes, start, pause } = useStopwatch({ autoStart: false });
 
-  const { seconds, minutes, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
+  const proceed = async () => {
+    const nextProgress = taskInstance.progress + 1;
 
-  const current_training = () => {
-    if (proceed != tasks.training_instances.length) {
-      console.log(tasks.training_instances.length)
-      console.log(proceed)
-      const counter = tasks.progress
-      return (
-        <div>
-          <div>{tasks.training_instances[counter].name}</div>
-          <div>{tasks.training_instances[counter].weight} kg : {tasks.training_instances[counter].times} 回</div>
-        </div>
-      );
+    if (nextProgress < taskInstance.training_instances.length) {
+      setTaskInstance({ ...taskInstance, progress: nextProgress });
+      proceedTaskInstance({ token, progress: nextProgress });
     } else {
-      return (
-        <div>good job!</div>
-      );
+      await deleteTaskInstance({ token });
+      navigate("/");
     }
-  }
-
-  const next_training = () => {
-    setproceed(proceed + 1)
-    proceedTaskInstance({
-      token,
-      progress: proceed
-    })
-  }
-
-  const button_group = () => {
-    if (proceed != tasks.training_instances.length) {
-      return (
-        <div>
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={start}>開始</div>
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={pause}>ストップ</div>
-          <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]" onClick={next_training}>完了</div>
-        </div>
-      );
-    }
-    else {
-      return (
-        <div className="flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 z-10 mx-2 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]">
-          <Link to="/tasks">完了</Link>
-        </div>
-      );
-    }
-  }
+  };
 
   return (
     <>
-      {tasks.length != 0 ? (
+      {taskInstance ? (
         <>
-          {current_training()}
-        </>
-      ) : undefined}
-
-      <div className="flex justify-center font-sm pt-16 text-muted_text">timer is...
-        <div className="flex justify-center font-sm">{isRunning ? "running" : "not running"}</div>
-      </div>
-      <div className="flex justify-center">
-        <div className="rounded-full h-80 w-80 bg-gradient-to-br from-bright_accent to-accent my-6 p-3">
-          <div className="rounded-full h-full w-full bg-white">
-            <div className="flex justify-center text-slate-900 text-7xl font-bold pt-24">
-              {minutes >= 10 ? minutes : ("0" + minutes)}:{seconds >= 10 ? seconds : ("0" + seconds)}
+          <div>
+            <div>
+              {taskInstance.training_instances[taskInstance.progress].name}
+            </div>
+            <div>
+              {taskInstance.training_instances[taskInstance.progress].weight} kg
+              : {taskInstance.training_instances[taskInstance.progress].times}{" "}
+              回
             </div>
           </div>
-        </div>
-      </div>
 
-      {tasks.length != 0 ? (
-        <>
-          <div className="rounded-2xl py-5 my-10">
-            <div className="grid grid-cols-3 gap-6 content-center">
-              {button_group()}
+          <div className="flex justify-center">
+            <div className="my-6 h-80 w-80 rounded-full bg-gradient-to-br from-bright_accent to-accent p-3">
+              <div className="h-full w-full rounded-full bg-white">
+                <div className="flex justify-center pt-24 text-7xl font-bold text-slate-900">
+                  {("00" + minutes).slice(-2) +
+                    ":" +
+                    ("00" + seconds).slice(-2)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="my-10 rounded-2xl py-5">
+            <div className="grid grid-cols-3 content-center gap-6">
+              <div>
+                <div
+                  className="z-10 mx-2 flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]"
+                  onClick={start}
+                >
+                  開始
+                </div>
+
+                <div
+                  className="z-10 mx-2 flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]"
+                  onClick={pause}
+                >
+                  ストップ
+                </div>
+
+                <div
+                  className="z-10 mx-2 flex justify-center rounded-2xl bg-gradient-to-br from-bright_accent to-accent py-3 shadow-[0_0_64px_0_rgba(0.8,0.9,0.9,0.5)] shadow-[#FF7152]"
+                  onClick={proceed}
+                >
+                  完了
+                </div>
+              </div>
             </div>
           </div>
         </>
       ) : undefined}
-
     </>
   );
 }

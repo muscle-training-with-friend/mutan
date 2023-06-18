@@ -16,7 +16,7 @@ export default function () {
   });
   const [modalVisible, setModalVisible] = useState(false);
 
-  const createTaskInstanceFn = (training_instance) => {
+  const createTrainingInstanceFn = (training_instance) => {
     setForm((prev) => ({
       ...prev,
       training_instances: [...prev.training_instances, training_instance],
@@ -41,7 +41,7 @@ export default function () {
   return (
     <>
       <Modal visible={modalVisible} closeFn={(_) => setModalVisible(false)}>
-        <TrainingInstanceBuilder build={createTaskInstanceFn} />
+        <TrainingInstanceBuilder build={createTrainingInstanceFn} />
       </Modal>
 
       <div className="text-text">

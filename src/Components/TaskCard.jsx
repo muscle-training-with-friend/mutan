@@ -1,20 +1,9 @@
 import { Link } from "react-router-dom";
-import { React, useState, useEffect, useContext } from "react";
-import { TokenContext } from "../Components/TokenContext";
-import { createTaskInstance } from "../adapter";
-
+import { React } from "react";
 
 export default function ({ task }) {
-  const token = useContext(TokenContext);
-
-  const addTraining = () => {
-    createTaskInstance({
-      token,
-      task_id : task.id})
-  }
-
   return (
-    <Link onClick={() => addTraining} to="/doneTask">
+    <Link to={"/doneTask/" + task.id}>
       <div className="my-5 rounded-3xl bg-gradient-to-br from-bright_accent to-accent p-6">
         <div className="flex justify-center text-lg font-bold">{task.name}</div>
 
