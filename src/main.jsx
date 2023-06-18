@@ -8,7 +8,6 @@ import NavbarRouteContainer from "./Pages/NavbarRouteContainer";
 import Home from "./Pages/Home";
 import Tasks from "./Pages/Tasks";
 import CreateTask from "./Pages/CreateTask";
-import AddTraining from "./Pages/AddTraining";
 import DoneTask from "./Pages/DoneTask";
 import Timer from "./Pages/Timer";
 import Statistics from "./Pages/Statistics";
@@ -40,10 +39,6 @@ const router = createBrowserRouter(
             {
               path: "/createTask",
               element: <CreateTask />,
-            },
-            {
-              path: "/addTraining",
-              element: <AddTraining />,
             },
             {
               path: "/doneTask",
