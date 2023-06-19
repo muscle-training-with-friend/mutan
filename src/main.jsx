@@ -11,7 +11,7 @@ import TaskCreate from "./Pages/TaskCreate";
 import Task from "./Pages/Task";
 import TaskRun from "./Pages/TaskRun";
 import Statistics from "./Pages/Statistics";
-import AllTrainings from "./Pages/AllTrainings";
+import Trainings from "./Pages/Trainings";
 import "./index.css";
 import { TokenContextProvider } from "./Components/TokenContext";
 
@@ -53,8 +53,8 @@ const router = createBrowserRouter(
               element: <Statistics />,
             },
             {
-              path: "/allTrainings",
-              element: <AllTrainings />,
+              path: "/trainings",
+              element: <Trainings />,
             },
           ],
         },
