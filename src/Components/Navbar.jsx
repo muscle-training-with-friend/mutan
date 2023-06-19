@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 
 export default function () {
   return (
-    <div className="absolute inset-x-0 bottom-0 grid grid-cols-5 gap-5 mb-8 p-4 mx-4 bg-gradient-to-br from-bright_accent to-accent rounded-2xl">
+    <div className="absolute inset-x-0 bottom-0 mx-4 mb-8 grid grid-cols-5 gap-5 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-4">
       <Link to="/home">
         <div className="flex justify-center text-white">
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet" />
+          <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+          />
           <span className="material-icons" style={{ fontSize: "36px" }}>
             home
           </span>
         </div>
-        <div className="flex justify-center text-sm text-white">
-          ホーム
-        </div>
+        <div className="flex justify-center text-sm text-white">ホーム</div>
       </Link>
 
       <Link to="/statistics">
@@ -23,9 +23,7 @@ export default function () {
             leaderboard
           </span>
         </div>
-        <div className="flex justify-center text-sm text-white">
-          統計
-        </div>
+        <div className="flex justify-center text-sm text-white">統計</div>
       </Link>
 
       <Link to="/tasks">
@@ -35,9 +33,7 @@ export default function () {
             add_task
           </span>
         </div>
-        <div className="flex justify-center text-sm text-white">
-          タスク
-        </div>
+        <div className="flex justify-center text-sm text-white">タスク</div>
       </Link>
 
       <Link to="/appearance">
@@ -47,9 +43,7 @@ export default function () {
             palette
           </span>
         </div>
-        <div className="flex justify-center text-sm text-white">
-          着せ替え
-        </div>
+        <div className="flex justify-center text-sm text-white">着せ替え</div>
       </Link>
 
       <Link to="/friends">
@@ -59,11 +53,8 @@ export default function () {
             people
           </span>
         </div>
-        <div className="flex justify-center text-sm text-white">
-          友達
-        </div>
+        <div className="flex justify-center text-sm text-white">友達</div>
       </Link>
-
     </div>
   );
 }
