@@ -7,10 +7,9 @@ import Landing from "./Pages/Landing";
 import NavbarRouteContainer from "./Pages/NavbarRouteContainer";
 import Home from "./Pages/Home";
 import Tasks from "./Pages/Tasks";
-import CreateTask from "./Pages/CreateTask";
-import AddTraining from "./Pages/AddTraining";
-import DoneTask from "./Pages/DoneTask";
-import Timer from "./Pages/Timer";
+import TaskCreate from "./Pages/TaskCreate";
+import Task from "./Pages/Task";
+import TaskRun from "./Pages/TaskRun";
 import Statistics from "./Pages/Statistics";
 import Trainings from "./Pages/Trainings";
 import "./index.css";
@@ -38,20 +37,16 @@ const router = createBrowserRouter(
               element: <Tasks />,
             },
             {
-              path: "/createTask",
-              element: <CreateTask />,
+              path: "/task_create",
+              element: <TaskCreate />,
             },
             {
-              path: "/addTraining",
-              element: <AddTraining />,
+              path: "/tasks/:id",
+              element: <Task />,
             },
             {
-              path: "/doneTask",
-              element: <DoneTask />,
-            },
-            {
-              path: "/timer",
-              element: <Timer />,
+              path: "/task_run",
+              element: <TaskRun />,
             },
             {
               path: "/statistics",
