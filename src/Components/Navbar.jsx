@@ -2,12 +2,59 @@ import { Link } from "react-router-dom";
 
 export default function () {
   return (
-    <div className="bg-slate-100">
-      <Link to="/home">ホーム</Link>
-      <Link to="/statistics">統計</Link>
-      <Link to="/tasks">タスク</Link>
-      <Link to="/appearance">着せ替え</Link>
-      <Link to="/friends">友達</Link>
+    <div className="absolute inset-x-0 bottom-0 mx-4 mb-8 grid grid-cols-5 gap-5 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-4">
+      <Link to="/home">
+        <div className="flex justify-center text-white">
+          <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+          />
+          <span className="material-icons" style={{ fontSize: "36px" }}>
+            home
+          </span>
+        </div>
+        <div className="flex justify-center text-sm text-white">ホーム</div>
+      </Link>
+
+      <Link to="/statistics">
+        <div className="flex justify-center text-white">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <span className="material-icons" style={{ fontSize: "36px" }}>
+            leaderboard
+          </span>
+        </div>
+        <div className="flex justify-center text-sm text-white">統計</div>
+      </Link>
+
+      <Link to="/tasks">
+        <div className="flex justify-center text-white">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <span className="material-icons" style={{ fontSize: "36px" }}>
+            add_task
+          </span>
+        </div>
+        <div className="flex justify-center text-sm text-white">タスク</div>
+      </Link>
+
+      <Link to="/appearance">
+        <div className="flex justify-center text-white">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <span className="material-icons" style={{ fontSize: "36px" }}>
+            palette
+          </span>
+        </div>
+        <div className="flex justify-center text-sm text-white">着せ替え</div>
+      </Link>
+
+      <Link to="/friends">
+        <div className="flex justify-center text-white">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          <span className="material-icons" style={{ fontSize: "36px" }}>
+            people
+          </span>
+        </div>
+        <div className="flex justify-center text-sm text-white">友達</div>
+      </Link>
     </div>
   );
 }
