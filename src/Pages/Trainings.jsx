@@ -7,6 +7,7 @@ export default function () {
   const token = useContext(TokenContext);
   const [trainings, setTrainings] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
+  const [part, setPart] = useState([])
 
   const fetchTrainings = async () => {
     if (token) {
@@ -16,6 +17,7 @@ export default function () {
         limit: 20,
         order_by: orderBy,
         descending: false,
+        tag: part,
       });
       setTrainings(trainings);
     }
@@ -23,7 +25,7 @@ export default function () {
 
   useEffect(() => {
     fetchTrainings();
-  }, [token, orderBy]);
+  }, [token, orderBy, part]);
 
   const setOrderByName = () => {
     setOrderBy("name");
@@ -36,6 +38,10 @@ export default function () {
   const setOrderByLatest = () => {
     setOrderBy("latest");
   };
+
+  const filter_train = (part) => {
+    setPart(part)
+  }
 
   return (
     <>
@@ -59,6 +65,7 @@ export default function () {
         最近
       </button>
 
+      <button onClick={() => filter_train("胸")}>胸トレ</button>
       {trainings.map((training) => (
         <TrainingCard training={training} />
       ))}
