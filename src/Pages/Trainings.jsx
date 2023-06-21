@@ -65,10 +65,40 @@ export default function () {
         最近
       </button>
 
-      <button onClick={() => filter_train("胸")}>胸トレ</button>
-      {trainings.map((training) => (
-        <TrainingCard training={training} />
-      ))}
+      <div>
+        <button onClick={() => filter_train("胸")}>胸トレ</button>
+        {trainings.map((training) => (
+          <TrainingCard training={training} />
+        ))}
+      </div>
+
+      <div>
+        <button onClick={() => filter_train("背中")}>背中トレ</button>
+        {trainings.map((training) => (
+          <TrainingCard training={training} />
+        ))}
+      </div>
+
+      <div>
+        <button onClick={() => filter_train("腕")}>腕トレ</button>
+        {trainings.map((training) => (
+          <TrainingCard training={training} />
+        ))}
+      </div>
+
+      <div>
+        <button onClick={() => filter_train("肩")}>肩トレ</button>
+        {trainings.map((training) => (
+          <TrainingCard training={training} />
+        ))}
+      </div>
+
+      <div>
+        <button onClick={() => filter_train("脚")}>脚トレ</button>
+        {trainings.map((training) => (
+          <TrainingCard training={training} />
+        ))}
+      </div>
     </>
   );
 }
