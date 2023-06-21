@@ -11,24 +11,22 @@ export default function () {
   const [part, setPart] = useState([])
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(3)
 
   const fetchTrainings = async () => {
     if (token) {
       const trainings = await getTrainings({
         token,
         offset: offset,
-        limit: limit,
+        limit: 10,
         order_by: orderBy,
         descending: false,
         tag: part,
       });
 
       setTrainings(trainings);
-      setOffset((prev) => prev +3);
-      setLimit((prev) => prev +3);
+      setOffset((prev) => prev + 10);
 
-      if (trainings.length < 1){
+      if (trainings.length < 1) {
         setHasMore(false);
         return;
       }
@@ -80,16 +78,22 @@ export default function () {
 
       <div>
         <button onClick={() => filter_train("胸")}>胸トレ</button>
-        <InfiniteScroll
-          loadMore={() => fetchTrainings()}
-          hasMore={hasMore}
-          loader={<div className="loader" key={0}>読み込んでるよん...</div>}>
+        <div style={{ height: "600px", overflow: "scroll" }}>
+          <InfiniteScroll
+            loadMore={() => fetchTrainings()}
+            hasMore={hasMore}
+            loader={<div className="loader" key={0}>読み込んでるよん...</div>}
+            threshold={-1}
+            useWindow={false}
+            >
 
-          {trainings.map((training) => (
-            <TrainingCard training={training} />
-          ))}
-          
-        </InfiniteScroll>
+            {trainings.map((training) => (
+              <TrainingCard training={training} />
+            ))}
+
+          </InfiniteScroll>
+        </div>
+
       </div>
 
     </>
