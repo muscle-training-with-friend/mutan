@@ -23,13 +23,13 @@ export default function () {
         tag: part,
       });
 
-      setTrainings(trainings);
-      setOffset((prev) => prev + 10);
-
       if (trainings.length < 1) {
         setHasMore(false);
         return;
       }
+
+      setTrainings((prev) => [...prev, ...trainings]);
+      setOffset((prev) => prev + 10);
     }
   };
 
@@ -52,6 +52,8 @@ export default function () {
   const filter_train = (part) => {
     setPart(part)
   }
+
+  console.log(trainings)
 
 
   return (
