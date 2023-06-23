@@ -12,10 +12,16 @@ import GlowButton from "../Components/GlowButton";
 import TrainingInstanceCard from "../Components/TrainingInstanceCard";
 
 export default function () {
+  const navigate = useNavigate();
+
   const token = useContext(TokenContext);
   const [taskInstance, setTaskInstance] = useState(undefined);
-  const navigate = useNavigate();
-  const { seconds, minutes, start, pause } = useStopwatch({ autoStart: false });
+  const {
+    seconds,
+    minutes,
+    start: startHandle,
+    pause: pauseHandler,
+  } = useStopwatch({ autoStart: false });
 
   const fetchTaskInstance = async () => {
     if (token) {
@@ -29,7 +35,7 @@ export default function () {
   }, [token]);
 
   // タスクの進行
-  const proceed = async () => {
+  const proceedHandle = async () => {
     const nextProgress = taskInstance.progress + 1;
 
     // 進行度を増加
@@ -52,7 +58,7 @@ export default function () {
   return (
     <>
       <TrainingInstanceCard
-        training_instance={
+        trainingInstance={
           taskInstance.training_instances[taskInstance.progress]
         }
       />
@@ -69,9 +75,9 @@ export default function () {
 
       <div className="my-10 rounded-2xl py-5">
         <div className="grid grid-cols-3 content-center gap-6">
-          <GlowButton onClick={start}>開始</GlowButton>
-          <GlowButton onClick={pause}>ストップ</GlowButton>
-          <GlowButton onClick={proceed}>完了</GlowButton>
+          <GlowButton onClick={startHandle}>開始</GlowButton>
+          <GlowButton onClick={pauseHandler}>ストップ</GlowButton>
+          <GlowButton onClick={proceedHandle}>完了</GlowButton>
         </div>
       </div>
     </>

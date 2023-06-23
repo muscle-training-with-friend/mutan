@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { getTrainings } from "../adapter";
 import { TokenContext } from "../Components/TokenContext";
 import TrainingCard from "../Components/TrainingCard";
@@ -9,51 +9,44 @@ const LIMIT_SIZE = 8;
 export default function () {
   const token = useContext(TokenContext);
   const [trainings, setTrainings] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [orderBy, setOrderBy] = useState("name");
   const [tag, setTag] = useState("胸");
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
 
-  const initTrainings = () => {
+  const clearTrainings = () => {
     setTrainings([]);
-    setOffset(0);
     setHasMore(true);
   };
 
   const fetchTrainings = async () => {
     if (token) {
-      const trainings = await getTrainings({
+      const appends = await getTrainings({
         token,
-        offset,
+        offset: trainings.length,
         limit: LIMIT_SIZE,
         order_by: orderBy,
         descending: false,
         tag,
       });
 
-      setTrainings((prev) => [...prev, ...trainings]);
-      setOffset((prev) => prev + LIMIT_SIZE);
-      if (trainings.length < LIMIT_SIZE) {
+      setTrainings((prev) => [...prev, ...appends]);
+      if (appends.length < LIMIT_SIZE) {
         setHasMore(false);
       }
     }
   };
 
-  useEffect(() => {
-    fetchTrainings();
-  }, [token, orderBy, tag]);
-
-  const createOrderByHandle = (targetOrderBy) => () => {
+  const setOrderByHandleFactory = (targetOrderBy) => () => {
     if (targetOrderBy != orderBy) {
-      initTrainings();
       setOrderBy(targetOrderBy);
+      clearTrainings();
     }
   };
 
-  const createTagHandle = (targetTag) => () => {
+  const setTagHandleFactory = (targetTag) => () => {
     if (targetTag != tag) {
-      initTrainings();
       setTag(targetTag);
+      clearTrainings();
     }
   };
 
@@ -62,39 +55,36 @@ export default function () {
       <div className="font-bold text-slate-600">トレーニングの一覧</div>
 
       <button
-        onClick={createOrderByHandle("name")}
+        onClick={setOrderByHandleFactory("name")}
         className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
       >
         名前順
       </button>
       <button
-        onClick={createOrderByHandle("times")}
+        onClick={setOrderByHandleFactory("times")}
         className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
       >
         回数順
       </button>
       <button
-        onClick={createOrderByHandle("latest")}
+        onClick={setOrderByHandleFactory("latest")}
         className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
       >
         最近
       </button>
 
       <div>
-        <button onClick={createTagHandle("胸")}>胸トレ</button>
-        <button onClick={createTagHandle("背中")}>背中トレ</button>
-        <button onClick={createTagHandle("肩")}>肩トレ</button>
-        <button onClick={createTagHandle("腕")}>腕トレ</button>
-        <button onClick={createTagHandle("脚")}>脚トレ</button>
+        <button onClick={setTagHandleFactory("胸")}>胸トレ</button>
+        <button onClick={setTagHandleFactory("背中")}>背中トレ</button>
+        <button onClick={setTagHandleFactory("肩")}>肩トレ</button>
+        <button onClick={setTagHandleFactory("腕")}>腕トレ</button>
+        <button onClick={setTagHandleFactory("脚")}>脚トレ</button>
       </div>
 
       <div className="h-[600px] overflow-scroll">
         <InfiniteScroll
           loadMore={fetchTrainings}
           hasMore={hasMore}
-          loader={<div>読み込み中</div>}
-          threshold={0}
-          initialLoad={false}
           useWindow={false}
         >
           {trainings.map((training) => (

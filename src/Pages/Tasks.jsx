@@ -40,7 +40,9 @@ export default function () {
           <>
             <div className="text-2xl font-bold">最近のタスク</div>
             {latestTasks.map((task) => (
-              <TaskCard task={task} />
+              <Link to={`/tasks/${task.id}`}>
+                <TaskCard task={task} />
+              </Link>
             ))}
           </>
         ) : undefined}
@@ -49,7 +51,9 @@ export default function () {
           <>
             <div className="text-2xl font-bold">すべてのタスク</div>
             {tasks.map((task) => (
-              <TaskCard task={task} />
+              <Link to={`/tasks/${task.id}`}>
+                <TaskCard task={task} />
+              </Link>
             ))}
           </>
         ) : undefined}
