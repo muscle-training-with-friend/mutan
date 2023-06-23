@@ -8,7 +8,7 @@ export default function () {
   const token = useContext(TokenContext);
   const [trainings, setTrainings] = useState([]);
   const [orderBy, setOrderBy] = useState("name");
-  const [part, setPart] = useState([])
+  const [part, setPart] = useState("胸")
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(0)
 
@@ -17,7 +17,7 @@ export default function () {
       const trainings = await getTrainings({
         token,
         offset: offset,
-        limit: 10,
+        limit: 8,
         order_by: orderBy,
         descending: false,
         tag: part,
@@ -29,31 +29,37 @@ export default function () {
       }
 
       setTrainings((prev) => [...prev, ...trainings]);
-      setOffset((prev) => prev + 10);
+      setOffset((prev) => prev + 8);
     }
   };
 
   useEffect(() => {
     fetchTrainings();
-  }, [token, orderBy]);
+  }, [token, orderBy, part]);
 
   const setOrderByName = () => {
+    setTrainings((prev) => []);
+    setOffset((prev) => 0);
     setOrderBy("name");
   };
 
   const setOrderByTimes = () => {
+    setTrainings((prev) => []);
+    setOffset((prev) => 0);
     setOrderBy("times");
   };
 
   const setOrderByLatest = () => {
+    setTrainings((prev) => []);
+    setOffset((prev) => 0);
     setOrderBy("latest");
   };
 
   const filter_train = (part) => {
-    setPart(part)
+    setTrainings((prev) => []);
+    setOffset((prev) => 0);
+    setPart(part);
   }
-
-  console.log(trainings)
 
 
   return (
@@ -80,24 +86,28 @@ export default function () {
 
       <div>
         <button onClick={() => filter_train("胸")}>胸トレ</button>
-        <div style={{ height: "600px", overflow: "scroll" }}>
-          <InfiniteScroll
-            loadMore={() => fetchTrainings()}
-            hasMore={hasMore}
-            loader={<div className="loader" key={0}>読み込んでるよん...</div>}
-            threshold={-1}
-            useWindow={false}
-            >
-
-            {trainings.map((training) => (
-              <TrainingCard training={training} />
-            ))}
-
-          </InfiniteScroll>
-        </div>
-
+        <button onClick={() => filter_train("背中")}>背中トレ</button>
+        <button onClick={() => filter_train("肩")}>肩トレ</button>
+        <button onClick={() => filter_train("腕")}>腕トレ</button>
+        <button onClick={() => filter_train("脚")}>脚トレ</button>
       </div>
 
+      <div style={{ height: "600px", overflow: "scroll" }}>
+        <InfiniteScroll
+          loadMore={() => fetchTrainings()}
+          hasMore={hasMore}
+          loader={<div className="loader" key={0}>読み込んでるよん...</div>}
+          threshold={0}
+          initialLoad={false}
+          useWindow={false}
+        >
+
+          {trainings.map((training) => (
+            <TrainingCard training={training} />
+          ))}
+
+        </InfiniteScroll>
+      </div>
     </>
   );
 }
