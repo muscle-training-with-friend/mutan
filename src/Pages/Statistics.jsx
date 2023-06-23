@@ -13,31 +13,21 @@ export default function () {
 
   return (
     <>
-      <div className="font-bold text-slate-600">統計</div>
-      <div>統計だだ！</div>
       <div className="demo-app">
       <div className="demo-app-main">
         <FullCalendar
           plugins={[dayGridPlugin]} //時間軸なし
           duration= {{days: 31}}
           headerToolbar={{
-            right: 'dayGridMonth,dayGridWeek',//右上の選択　月，週
-            left: 'prev,next today',
+            right: 'today',//右上の選択
+            left: 'prev,next',
             center: 'title'
           }}
           locale= "ja"
-          // dayCellContent={function (e) {
-          //   e.dayNumberText = e.dayNumberText.replace('日');
-          // }}
           contentHeight={'auto'}
           initialView="dayGridMonth" // 初期表示のモードを設定する
           dayMaxEvents='ture'
-          events= { event
-          //[
-          //   {title: 'ジム', date:'2023-06-09'},
-          //   {title: 'ジム', date:'2023-06-13'}
-          // ]
-          }
+          events= {event()}
         />
       </div>
     </div>
