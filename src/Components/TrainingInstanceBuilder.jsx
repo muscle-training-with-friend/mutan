@@ -1,31 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import TrainingsScroller from "./TrainingsScroller";
+import { useState } from "react";
+import TrainingsView from "./TrainingsView";
 
 export default function ({ build }) {
   const [cursor, setCursor] = useState(undefined);
 
-  const LIMIT_SIZE = 8;
-
-  const createDef = (trainings) => {
-    return(
-      trainings.map((training) => (
-        <div
-          onClick={(_) => setCursor(training)}
-          className="mb-3 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-3"
-        >
-          <div>{training.name}</div>
-          <div>重量(デフォルト): {training.weight}</div>
-          <div>回数(デフォルト): {training.times}</div>
-        </div>
-      ))
-    );
-  }
-
   return (
     <>
       <div className="font-bold">すべてのトレーニング</div>
-      
-      <TrainingsScroller limit={LIMIT_SIZE} def={createDef}/>
+
+      <TrainingsView onClickFactory={(training) => () => setCursor(training)} />
 
       {cursor ? (
         <>
