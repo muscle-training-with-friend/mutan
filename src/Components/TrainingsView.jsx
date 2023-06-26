@@ -87,6 +87,7 @@ export default function ({ onClickFactory }) {
           hasMore={hasNext}
           initialLoad={false}
           useWindow={false}
+          threshold={20}
         >
           {trainings.map((training, i) => (
             <div key={i} onClick={onClickFactory(training)}>
