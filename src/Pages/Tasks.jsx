@@ -1,58 +1,24 @@
 import { Link } from "react-router-dom";
 import { React, useState, useEffect, useContext } from "react";
-import { getTasks } from "../adapter";
-import { TokenContext } from "../Components/TokenContext";
-import TaskCard from "../Components/TaskCard";
+import TasksView from "../Components/TasksView";
 
 export default function () {
-  const token = useContext(TokenContext);
-  const [tasks, setTasks] = useState([]);
-  const [latestTasks, setLatestTasks] = useState([]);
-
-  const fetchTasks = async () => {
-    const tasks = await getTasks({
-      token,
-      offset: 0,
-      limit: 20,
-      order_by: "times",
-      descending: true,
-    });
-    setTasks(tasks);
-
-    const latestTasks = await getTasks({
-      token,
-      offset: 0,
-      limit: 2,
-      order_by: "latest",
-      descending: true,
-    });
-    setLatestTasks(latestTasks);
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
 
   return (
     <>
       <div className="text-text">
-        {latestTasks.length != 0 ? (
-          <>
-            <div className="text-2xl font-bold">最近のタスク</div>
-            {latestTasks.map((task) => (
-              <TaskCard task={task} />
-            ))}
-          </>
-        ) : undefined}
-
-        {tasks.length != 0 ? (
-          <>
-            <div className="text-2xl font-bold">すべてのタスク</div>
-            {tasks.map((task) => (
-              <TaskCard task={task} />
-            ))}
-          </>
-        ) : undefined}
+        <>
+          <div className="text-2xl font-bold">最近のタスク</div>
+          <TasksView
+            originOrder={"latest"}
+          />
+        </>
+        <>
+          <div className="text-2xl font-bold">すべてのタスク</div>
+          <TasksView
+            originOrder={"name"}
+          />
+        </>
 
         <Link to="/task_create">
           <div className="my-5 rounded-3xl bg-bright_accent p-6">
