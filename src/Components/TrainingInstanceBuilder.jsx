@@ -1,39 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import { getTrainings } from "../adapter";
-import { TokenContext } from "./TokenContext";
+import { useState } from "react";
+import TrainingsView from "./TrainingsView";
 
 export default function ({ build }) {
-  const token = useContext(TokenContext);
-  const [trainings, setTrainings] = useState([]);
   const [cursor, setCursor] = useState(undefined);
-
-  const fn = async () => {
-    const trainings = await getTrainings({
-      token,
-      offset: 0,
-      limit: 20,
-      order_by: "name",
-      descending: true,
-    });
-    setTrainings(trainings);
-  };
-  useEffect(() => {
-    fn();
-  }, []);
 
   return (
     <>
       <div className="font-bold">すべてのトレーニング</div>
-      {trainings.map((training) => (
-        <div
-          onClick={(_) => setCursor(training)}
-          className="mb-3 rounded-2xl bg-gradient-to-br from-bright_accent to-accent p-3"
-        >
-          <div>{training.name}</div>
-          <div>重量(デフォルト): {training.weight}</div>
-          <div>回数(デフォルト): {training.times}</div>
-        </div>
-      ))}
+
+      <TrainingsView onClickFactory={(training) => () => setCursor(training)} />
 
       {cursor ? (
         <>
