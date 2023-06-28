@@ -1,11 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { getTrainings } from "../adapter";
-import { TokenContext } from "./TokenContext";
-import TrainingCard from "./TrainingCard";
+import { useState } from "react";
+import TrainingsView from "./TrainingsView";
 
 export default function ({ onBuild }) {
-  const token = useContext(TokenContext);
-  const [trainings, setTrainings] = useState([]);
   const [cursor, setCursor] = useState(undefined);
 
   const setCursorWithWeight = (weight) => {
@@ -16,29 +12,11 @@ export default function ({ onBuild }) {
     setCursor((prev) => ({ ...prev, times }));
   };
 
-  const fetchTrainings = async () => {
-    const trainings = await getTrainings({
-      token,
-      offset: 0,
-      limit: 20,
-      order_by: "name",
-      descending: true,
-    });
-    setTrainings(trainings);
-  };
-
-  useEffect(() => {
-    fetchTrainings();
-  }, []);
-
   return (
     <>
       <div className="font-bold">すべてのトレーニング</div>
-      {trainings.map((training) => (
-        <div onClick={() => setCursor(training)}>
-          <TrainingCard training={training} />
-        </div>
-      ))}
+
+      <TrainingsView onClickFactory={(training) => () => setCursor(training)} />
 
       {cursor ? (
         <>
