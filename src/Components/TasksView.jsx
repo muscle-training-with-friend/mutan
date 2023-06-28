@@ -4,14 +4,15 @@ import { TokenContext } from "./TokenContext";
 import InfiniteScroll from "react-infinite-scroller";
 import TaskCard from "./TaskCard";
 
+const LIMIT_SIZE = 8;
 
-export default function ({ originOrder }) {
+export default function ({ onClickFactory }) {
   const token = useContext(TokenContext);
+
   const [tasks, setTasks] = useState([]);
   const [hasNext, setHasNext] = useState(true);
-  const [orderBy, setOrderBy] = useState(originOrder);
 
-  const LIMIT_SIZE = 2;
+  const [orderBy, setOrderBy] = useState("name");
 
   const loadNextHandle = async () => {
     if (token) {
@@ -62,7 +63,7 @@ export default function ({ originOrder }) {
         最近
       </button>
 
-      <div className="h-[240px] overflow-scroll">
+      <div className="h-[500px] overflow-scroll">
         <InfiniteScroll
           loadMore={loadNextHandle}
           hasMore={hasNext}
@@ -71,7 +72,7 @@ export default function ({ originOrder }) {
           threshold={20}
         >
           {tasks.map((task, i) => (
-            <div key={i}>
+            <div key={i} onClick={onClickFactory(task)}>
               <TaskCard task={task} />
             </div>
           ))}

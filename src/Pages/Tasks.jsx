@@ -1,24 +1,18 @@
 import { Link } from "react-router-dom";
-import { React, useState, useEffect, useContext } from "react";
+import { React } from "react";
 import TasksView from "../Components/TasksView";
 
 export default function () {
-
   return (
     <>
       <div className="text-text">
-        <>
-          <div className="text-2xl font-bold">最近のタスク</div>
-          <TasksView
-            originOrder={"latest"}
-          />
-        </>
-        <>
-          <div className="text-2xl font-bold">すべてのタスク</div>
-          <TasksView
-            originOrder={"name"}
-          />
-        </>
+        <div className="text-2xl font-bold">すべてのタスク</div>
+
+        <TasksView
+          onClickFactory={(task) => () => {
+            /* TODO */
+          }}
+        />
 
         <Link to="/task_create">
           <div className="my-5 rounded-3xl bg-bright_accent p-6">
