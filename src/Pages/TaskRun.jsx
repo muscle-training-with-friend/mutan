@@ -57,27 +57,30 @@ export default function () {
 
   return (
     <>
-      <TrainingInstanceCard
-        trainingInstance={
-          taskInstance.training_instances[taskInstance.progress]
-        }
-      />
+      <div className="-mt-2">
+        <TrainingInstanceCard
+          trainingInstance={
+            taskInstance.training_instances[taskInstance.progress]
+          }
+        />
+      </div>
+
 
       <div className="flex justify-center">
-        <div className="my-6 h-80 w-80 rounded-full bg-gradient-to-br from-bright_accent to-accent p-3">
+        <div className="my-12 h-80 w-80 rounded-full bg-gradient-to-br from-bright_accent to-accent p-2">
           <div className="h-full w-full rounded-full bg-white">
-            <div className="flex justify-center pt-24 text-7xl font-bold text-slate-900">
+            <div className="flex justify-center p-24 text-8xl text-text">
               {("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2)}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="my-10 rounded-2xl py-5">
+      <div className="mb-6 rounded-2xl py-5">
         <div className="grid grid-cols-3 content-center gap-6">
-          <GlowButton onClick={startHandle}>開始</GlowButton>
-          <GlowButton onClick={pauseHandler}>ストップ</GlowButton>
-          <GlowButton onClick={proceedHandle}>完了</GlowButton>
+          <GlowButton onClick={startHandle}><div className="text-text py-1 font-bold">開始</div></GlowButton>
+          <GlowButton onClick={pauseHandler}><div className="text-text font-bold">ストップ</div></GlowButton>
+          <GlowButton onClick={proceedHandle}><div className="text-text font-bold">完了</div></GlowButton>
         </div>
       </div>
     </>
