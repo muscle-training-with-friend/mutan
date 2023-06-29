@@ -12,7 +12,7 @@ export const TokenContext = createContext(undefined);
 export function TokenContextProvider(props) {
   const [token, setToken] = useState(undefined);
 
-  const fn = async () => {
+  const fetchToken = async () => {
     let token = Cookies.get(KEY);
     if (token) {
       try {
@@ -27,8 +27,9 @@ export function TokenContextProvider(props) {
     }
     setToken(token);
   };
+
   useEffect(() => {
-    fn();
+    fetchToken();
   }, []);
 
   return (

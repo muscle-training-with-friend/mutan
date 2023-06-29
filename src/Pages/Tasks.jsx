@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { React } from "react";
 import TasksView from "../Components/TasksView";
 
 export default function () {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="text-text">
@@ -10,7 +12,7 @@ export default function () {
 
         <TasksView
           onClickFactory={(task) => () => {
-            /* TODO */
+            navigate(`/tasks/${task.id}`);
           }}
         />
 

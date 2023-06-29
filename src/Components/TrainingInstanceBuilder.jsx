@@ -1,8 +1,16 @@
 import { useState } from "react";
 import TrainingsView from "./TrainingsView";
 
-export default function ({ build }) {
+export default function ({ onBuild }) {
   const [cursor, setCursor] = useState(undefined);
+
+  const setCursorWithWeight = (weight) => {
+    setCursor((prev) => ({ ...prev, weight }));
+  };
+
+  const setCursorWithTimes = (times) => {
+    setCursor((prev) => ({ ...prev, times }));
+  };
 
   return (
     <>
@@ -18,28 +26,18 @@ export default function ({ build }) {
           <input
             type="number"
             value={cursor.weight}
-            onChange={(e) =>
-              setCursor((prev) => ({
-                ...prev,
-                weight: parseFloat(e.target.value),
-              }))
-            }
+            onChange={(e) => setCursorWithWeight(parseFloat(e.target.value))}
             className="mb-2 rounded bg-muted_bg p-2"
             laceholder="重量"
           />
           <input
             type="number"
             value={cursor.times}
-            onChange={(e) =>
-              setCursor((prev) => ({
-                ...prev,
-                times: parseFloat(e.target.value),
-              }))
-            }
+            onChange={(e) => setCursorWithTimes(parseInt(e.target.value))}
             className="mb-2 rounded bg-muted_bg p-2"
             placeholder="回数"
           />
-          <div onClick={(_) => build(cursor)}>
+          <div onClick={() => onBuild(cursor)}>
             <div className="rounded bg-muted_bg p-2">追加</div>
           </div>
         </>
