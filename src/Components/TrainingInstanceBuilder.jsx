@@ -14,7 +14,6 @@ export default function ({ onBuild }) {
 
   return (
     <>
-      <div className="font-bold">すべてのトレーニング</div>
 
       <TrainingsView onClickFactory={(training) => () => setCursor(training)} />
 

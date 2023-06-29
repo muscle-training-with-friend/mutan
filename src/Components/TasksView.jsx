@@ -11,8 +11,9 @@ export default function ({ onClickFactory }) {
 
   const [tasks, setTasks] = useState([]);
   const [hasNext, setHasNext] = useState(true);
-
   const [orderBy, setOrderBy] = useState("name");
+  const [visiable, setVisiable] = useState(false);
+  const [orderElement, setOrderElement] = useState(["name", "times", "latest"])
 
   const loadNextHandle = async () => {
     if (token) {
@@ -33,37 +34,63 @@ export default function ({ onClickFactory }) {
   const setOrderByHandleFactory = (targetOrderBy) => () => {
     if (targetOrderBy != orderBy) {
       setOrderBy(targetOrderBy);
+      setTasks([]);
+      setHasNext(true);
     }
   };
 
   useEffect(() => {
-    setTasks([]);
-    setHasNext(true);
     loadNextHandle();
   }, [token, orderBy]);
 
+  const displayOrder = (order) => {
+    let textOrder = "名前順"
+    if (order == "name") { textOrder = "名前順" }
+    if (order == "times") { textOrder = "回数順" }
+    if (order == "latest") { textOrder = "最近" }
+
+    return (
+      <div>
+        <button onClick={setOrderByHandleFactory(order)} className="rounded-2xl my-1 mx-4 px-6 py-3 text-text bg-gradient-to-br from-bright_accent to-accent">
+          {textOrder}
+        </button>
+      </div>
+    );
+  }
+
+  const buildDropDown = () => {
+    setVisiable(!visiable);
+  }
+
   return (
     <>
-      <button
-        onClick={setOrderByHandleFactory("name")}
-        className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
-      >
-        名前順
-      </button>
-      <button
-        onClick={setOrderByHandleFactory("times")}
-        className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
-      >
-        回数順
-      </button>
-      <button
-        onClick={setOrderByHandleFactory("latest")}
-        className="rounded bg-blue-400 px-2 py-1 font-semibold text-white hover:bg-blue-500"
-      >
-        最近
-      </button>
+      <div className="flex">
+        <div className="text-4xl font-bold mr-44 mx-6 mb-2">all tasks</div>
+        <div className="mt-2">
+          <button onClick={() => buildDropDown()}>
+            <link
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"
+            />
+            <span class="material-icons" style={{ fontSize: "32px" }}>
+              settings
+            </span>
+          </button>
+        </div>
+      </div>
+      <div className="text-text">
+        {visiable ? (
+          <>
+            <div className="flex">
+              {orderElement.map((order) => (
+                displayOrder(order)
+              ))}
+            </div>
+          </>
+        ) : undefined}
+      </div>
 
-      <div className="h-[500px] overflow-scroll">
+      <div className="my-4 h-[450px] overflow-scroll">
         <InfiniteScroll
           loadMore={loadNextHandle}
           hasMore={hasNext}

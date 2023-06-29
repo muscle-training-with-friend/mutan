@@ -4,9 +4,9 @@ export default function ({ training }) {
       <div className="flex justify-center text-xl font-bold">
         {training.name}
       </div>
-      <div className="my-2 text-sm">{training.weight} kg </div>
-      <div className="my-2 text-sm">{training.times} 回 </div>
-      <div className="my-2 text-sm">{training.tags}</div>
+      <div className="my-2 text-sm">{training.weight} kg {training.times} 回</div>
+      <div className="my-2 text-sm"> </div>
+      <div className="my-2 text-sm">{training.description}</div>
     </div>
   );
 }

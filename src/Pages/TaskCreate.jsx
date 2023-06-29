@@ -73,19 +73,22 @@ export default function () {
           />
         </div>
 
-        {form.trainingInstances.map((trainingInstance) => (
-          <TrainingInstanceCard trainingInstance={trainingInstance} />
-        ))}
+        <div className="h-[250px] overflow-y-scroll">
+          {form.trainingInstances.map((trainingInstance) => (
+            <TrainingInstanceCard trainingInstance={trainingInstance} />
+          ))}
+        </div>
+
 
         <div onClick={modal.open}>
-          <div className="my-6 flex justify-center rounded-2xl bg-bright_accent p-6">
-            <div className="text-lg ">トレーニングを追加</div>
+          <div className="my-6 flex justify-center rounded-2xl bg-bright_accent p-12">
+            <div className="text-xl">トレーニングを追加</div>
           </div>
         </div>
 
         <div onClick={createTaskHandle}>
-          <div className="my-6 flex justify-center rounded-2xl bg-bright_accent bg-gradient-to-br from-bright_accent to-accent p-6 text-text hover:bg-accent hover:text-inverted_text">
-            <div className="text-lg font-bold ">完了</div>
+          <div className="p-12 my-6 flex justify-center rounded-2xl bg-bright_accent bg-gradient-to-br from-bright_accent to-accent p-6 text-text hover:bg-accent hover:text-inverted_text">
+            <div className="text-xl font-bold ">完了</div>
           </div>
         </div>
       </div>
